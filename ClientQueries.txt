@@ -1,0 +1,38 @@
+----------------------
+query getAllUsers{
+  users{
+    id,
+    fname,
+    lname,
+    email,
+    password
+    
+  }
+}
+---------------
+
+query getAllQuotes{
+  quotes{
+    content,
+    by
+  }
+}
+
+-------------------
+query getUserById{
+  user(id:"1234"){
+    id
+    fname
+    quotes{
+      content
+    }
+  }
+}
+--------------------
+query getQuoteByUser{
+  iquote(by:"1234"){
+    content
+    by
+  }
+}
+-------------------

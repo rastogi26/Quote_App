@@ -19,8 +19,8 @@ query getAllQuotes{
 }
 
 -------------------
-query getUserById{
-  user(id:"1234"){
+query getUserById($userid: ID!){
+  user(id: $userid){
     id
     fname
     quotes{
@@ -29,10 +29,21 @@ query getUserById{
   }
 }
 --------------------
-query getQuoteByUser{
-  iquote(by:"1234"){
+query getQuoteByUser($quoteId: ID!){
+  iquote(by:$quoteId){
     content
     by
   }
 }
 -------------------
+mutation createUser($userNew:UserInput!){
+  user:signupUserDummy(userNew:$userNew){
+    id
+    fname
+    lname
+    email
+  }
+}
+
+
+-------------------------------

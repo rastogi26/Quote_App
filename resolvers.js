@@ -6,16 +6,17 @@ import jwt from "jsonwebtoken";
 
 
 const User = mongoose.model("User")
+const Quote = mongoose.model("Quote")
 
 const resolvers = {
   Query: {
-    users: () => users,
-    user: (_, { _id }) => users.find((user) => user._id == _id), // first argument is parent but it is already a root so we use _ and second is _id
-    quotes: () => quotes,
-    iquote: (_, { by }) => quotes.filter((quote) => quote.by == by),
+    users: async () => await User.find({}),
+    user: async (_, { _id }) => await User.findOne({ _id }), // first argument is parent but it is already a root so we use _ and second is _id
+    quotes: async () => await Quote.find({}).populate("by", "_id fname"),
+    iquote: async (_, { by }) => await Quote.find({ by }),
   },
   User: {
-    quotes: (ur) => quotes.filter((quote) => quote.by == ur._id), //parent
+    quotes: async (ur) => await Quote.find({ by: ur._id }), //parent
   },
   Mutation: {
     signupUser: async (_, { userNew }) => {
@@ -36,19 +37,31 @@ const resolvers = {
       return await newUser.save();
     },
     signinUser: async (_, { userSignin }) => {
-      const user = await User.findOne({email:userSignin.email})
-      if(!user)
-        {
-          throw new Error("User does not exist with this email")
-        }
+      const user = await User.findOne({ email: userSignin.email });
+      if (!user) {
+        throw new Error("User does not exist with this email");
+      }
 
-        const isMatch = await bcrypt.compare(userSignin.password,user.password)
-        if (!isMatch) {
-          throw new Error("Email or Password is invalid.")
-        }
-        //generate token
-        const token= jwt.sign({userId:user._id},process.env.SECRET_KEY)
-        return {token}
+      const isMatch = await bcrypt.compare(userSignin.password, user.password);
+      if (!isMatch) {
+        throw new Error("Email or Password is invalid.");
+      }
+      //generate token
+      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+      return { token };
+    },
+    createQuote: async (_, { name }, { userId }) => {
+      if (!userId) {
+        throw new Error("You must be logged in");
+      }
+
+      const newQuote = new Quote({
+        name,
+        by: userId,
+      });
+
+      await newQuote.save();
+      return "Quote saved successfully";
     },
   },
 };

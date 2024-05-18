@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const quoteSchema = new Schema({
-  content: {
+  name: {
     type: String,
     required: true,
   },

@@ -9,19 +9,19 @@ const typeDefs = gql`
 
   type User {
     _id: ID!
-    fname: String
-    lname: String
-    email: String
-    password: String
+    fname: String!
+    lname: String!
+    email: String!
+    password: String!
     quotes: [Quote] #user can have arrays of quote Reference Quote
   }
 
   type Quote {
-    content: String
-    by: ID
+    content: String!
+    by: ID!
   }
   type Token{
-    token:String
+    token:String!
   }
   type Mutation{
     signupUser(userNew: UserInput!):User   #return User

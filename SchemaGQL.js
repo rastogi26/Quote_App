@@ -5,6 +5,7 @@ const typeDefs = gql`
     user(_id: ID!): User # api to find user by id type User
     quotes: [QuoteWithName]
     iquote(by: ID!): [Quote] #array of quotes
+    myprofile:User
   }
 
   type QuoteWithName {

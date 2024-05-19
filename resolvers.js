@@ -14,6 +14,12 @@ const resolvers = {
     user: async (_, { _id }) => await User.findOne({ _id }), // first argument is parent but it is already a root so we use _ and second is _id
     quotes: async () => await Quote.find({}).populate("by", "_id fname"),
     iquote: async (_, { by }) => await Quote.find({ by }),
+    myprofile:async(_,args,{userId})=>{
+       if (!userId) {
+         throw new Error("You must be logged in");
+       }
+      return await User.findOne({_id:userId})
+    }
   },
   User: {
     quotes: async (ur) => await Quote.find({ by: ur._id }), //parent

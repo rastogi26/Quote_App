@@ -8,7 +8,16 @@ export default function Signup() {
     const [formData,setFormData]= useState({})
     const[signupUser,{data,loading,error}]= useMutation(SIGNUP_USER)
 
-    if(loading)return <h1>Loading</h1>
+    // if(loading)return <h1>Loading</h1>
+    if (loading) {
+      return (
+        <div className="progress">
+          <div className="indeterminate">
+            <h2>Loading</h2>
+          </div>
+        </div>
+      );
+    }
    
 
     const handleChange = (e)=>{

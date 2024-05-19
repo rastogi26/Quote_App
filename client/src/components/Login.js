@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Login() {
      
     const [formData,setFormData]= useState({})
+    const navigate = useNavigate()
 
     const handleChange = (e)=>{
         setFormData({
@@ -17,6 +19,7 @@ export default function Login() {
     const handleSubmit = (e)=>{
            e.preventDefault()  //page will not refresh
            console.log(formData);
+           navigate("/")
     }
 
   return (
@@ -26,17 +29,20 @@ export default function Login() {
         <input
           type="email"
           placeholder="email"
-          name='email'
+          name="email"
           onChange={handleChange}
           required
         />
         <input
           type="password"
           placeholder="password"
-          name='password'
-          onChange={handleChange}  //passing only defination, react wil call the evenyt automatically
+          name="password"
+          onChange={handleChange} //passing only defination, react wil call the evenyt automatically
           required
         />
+        <Link to="/signup">
+          <p>Don't have an account? Click here</p>
+        </Link>
         <button className="btn #673ab7 deep-purple" type="submit">
           Login
         </button>
